@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coconut Breaker - Smash a sacred digital coconut to resolve life's dilemmas: Clean Split (Blessed), Rotten (Cursed), or Chocolate (Jackpot).">
+  <title>Coconut Breaker 🥥🔨 - Smash Your Dilemma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Fredoka+One&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Tropical Mystic Background -->
+  <div class="tropical-bg">
+    <div class="sun"></div>
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="floating-leaves" id="leavesContainer"></div>
+  </div>
+
+  <!-- Audio Control & Quick Stats -->
+  <div class="top-nav">
+    <div class="nav-brand">
+      <span class="brand-nut">🥥</span>
+      <span class="brand-title">Coconut Breaker Oracle</span>
+    </div>
+    <div class="nav-controls">
+      <button id="soundToggleBtn" class="pill-btn sound-btn" title="Toggle Sound">🔊 Sound: ON</button>
+      <div class="history-pill" id="historyPill">✨ Smashed: <strong id="totalSmashedCount">0</strong></div>
+    </div>
+  </div>
+
+  <main class="oracle-container">
+    <!-- VIEW 1: INQUIRY & SMASH ARENA -->
+    <section class="stage-card" id="stageArena">
+      <!-- Dilemma Input Area -->
+      <header class="dilemma-header">
+        <h1 class="oracle-title">Smash the Sacred Coconut</h1>
+        <p class="oracle-sub">Type your dilemma, focus your intent, and tap the coconut to seal your destiny.</p>
+        
+        <div class="dilemma-box">
+          <input 
+            type="text" 
+            id="dilemmaInput" 
+            class="dilemma-input" 
+            placeholder="e.g. Should I accept that new job offer?..." 
+            maxlength="140"
+            autocomplete="off"
+          />
+          <div class="prompt-chips">
+            <span class="chip-label">Quick picks:</span>
+            <button class="chip-btn" data-preset="Should I text my ex?">Text ex?</button>
+            <button class="chip-btn" data-preset="Should I buy that plane ticket?">Buy ticket?</button>
+            <button class="chip-btn" data-preset="Should I order takeout tonight?">Order food?</button>
+            <button class="chip-btn" data-preset="Should I launch this project now?">Launch now?</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- The Coconut Interactive Area -->
+      <div class="coconut-altar">
+        <!-- Floating Tapping Hints -->
+        <div class="tap-hint-pill" id="tapHint">
+          <span class="hint-hammer">🔨</span> Tap coconut to smash! (<span id="tapsLeft">1-4</span> hits)
+        </div>
+
+        <div class="coconut-stage-zone" id="coconutStageZone">
+          <div class="damage-floats" id="damageFloats"></div>
+
+          <!-- Coconut Interactive Model -->
+          <div class="coconut-actor" id="coconutActor" role="button" tabindex="0" aria-label="Tap to smash the coconut">
+            <div class="actor-shadow" id="actorShadow"></div>
+            
+            <div class="coconut-svg-wrapper" id="coconutSvgWrapper">
+              <svg viewBox="0 0 240 260" class="coconut-svg" id="coconutSvg">
+                <defs>
+                  <radialGradient id="huskGrad" cx="35%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#935b37"/>
+                    <stop offset="60%" stop-color="#5c381e"/>
+                    <stop offset="100%" stop-color="#2d1708"/>
+                  </radialGradient>
+                  <radialGradient id="highlightGrad" cx="30%" cy="25%" r="40%">
+                    <stop offset="0%" stop-color="#dfa069" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#935b37" stop-opacity="0"/>
+                  </radialGradient>
+                  <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(37,18,6,0.35)"/>
+                  </filter>
+                </defs>
+
+                <!-- Full Solid Nut Shell -->
+                <g id="intactShell" filter="url(#softGlow)">
+                  <path id="shellOuter" d="M120 18 C185 18, 222 75, 222 145 C222 215, 180 238, 120 238 C60 238, 18 215, 18 145 C18 75, 55 18, 120 18 Z" fill="url(#huskGrad)"/>
+                  <path d="M120 18 C185 18, 222 75, 222 145 C222 215, 180 238, 120 238 C60 238, 18 215, 18 145 C18 75, 55 18, 120 18 Z" fill="url(#highlightGrad)"/>
+                  
+                  <!-- Three Characteristic Eyes -->
+                  <g id="shellEyes">
+                    <ellipse cx="102" cy="74" rx="8" ry="11" fill="#1e0e04" opacity="0.9"/>
+                    <ellipse cx="138" cy="74" rx="8" ry="11" fill="#1e0e04" opacity="0.9"/>
+                    <ellipse cx="120" cy="98" rx="10" ry="8" fill="#1e0e04" opacity="0.9"/>
+                  </g>
+
+                  <!-- Husk fibrous grooves -->
+                  <path d="M48 85 Q82 140 70 200" stroke="#361a07" stroke-width="2.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+                  <path d="M192 85 Q158 140 170 200" stroke="#361a07" stroke-width="2.5" fill="none" opacity="0.4" stroke-linecap="round"/>
+                  <path d="M120 22 Q120 120 120 234" stroke="#2a1406" stroke-width="2" stroke-dasharray="6,8" fill="none" opacity="0.3"/>
+                </g>
+
+                <!-- Progressive Crack Fissure Layers -->
+                <g id="crackLevel1" class="crack-layer" opacity="0">
+                  <path d="M120 40 L108 85 L135 125 L112 160" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none"/>
+                  <path d="M108 85 L80 102" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/>
+                </g>
+                <g id="crackLevel2" class="crack-layer" opacity="0">
+                  <path d="M112 160 L140 195 L124 225" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+                  <path d="M135 125 L175 142 L195 130" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/>
+                  <path d="M80 102 L50 130" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                </g>
+                <g id="crackLevel3" class="crack-layer" opacity="0">
+                  <!-- Jagged deep fissure revealing bright core -->
+                  <path d="M105 80 Q125 125 110 180 Q95 125 105 80" fill="#ffffff" stroke="#fcd34d" stroke-width="2"/>
+                  <path d="M128 120 L168 160 L188 175" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Floating hammer indicator for tactile guidance -->
+            <div class="hover-hammer" id="hoverHammer">🔨</div>
+          </div>
+        </div>
+
+        <!-- Tap Hit Progress Bar -->
+        <div class="crack-meter-wrapper">
+          <div class="crack-meter-bg">
+            <div class="crack-meter-fill" id="meterFill" style="width: 0%;"></div>
+          </div>
+          <span class="crack-meter-label" id="meterLabel">Tap to strike!</span>
+        </div>
+      </div>
+
+      <!-- Probabilities & Outcome Guide -->
+      <footer class="odds-footer">
+        <div class="odd-item blessed">
+          <span class="odd-badge">50%</span>
+          <span class="odd-icon">✨</span>
+          <div>
+            <strong>Clean Split (Blessed)</strong>
+            <span>Two perfect halves & golden light</span>
+          </div>
+        </div>
+        <div class="odd-item rotten">
+          <span class="odd-badge">35%</span>
+          <span class="odd-icon">🪰</span>
+          <div>
+            <strong>Rotten (Cursed)</strong>
+            <span>Gray burst & buzzing flies</span>
+          </div>
+        </div>
+        <div class="odd-item chocolate">
+          <span class="odd-badge">15%</span>
+          <span class="odd-icon">🍫</span>
+          <div>
+            <strong>Chocolate (Jackpot)</strong>
+            <span>Rich melted chocolate & coins</span>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- VIEW 2: DESTINY RESULT SCREEN -->
+    <section class="stage-card result-screen" id="stageResult" style="display: none;">
+      <!-- Dilemma Echo Quote -->
+      <div class="dilemma-quote-container">
+        <span class="quote-mark">“</span>
+        <blockquote class="user-dilemma-text" id="resultDilemmaQuote">Should I take the leap?</blockquote>
+        <span class="quote-mark right">”</span>
+      </div>
+
+      <!-- Result Banner Badge -->
+      <div class="outcome-badge-pill" id="outcomeBadge">
+        <span class="outcome-type-icon" id="outcomeTypeIcon">✨</span>
+        <span class="outcome-type-title" id="outcomeTypeTitle">Clean Split</span>
+        <span class="outcome-rarity" id="outcomeRarity">50% Blessed</span>
+      </div>
+
+      <!-- Outcome Visual Presentation Area -->
+      <div class="outcome-visual-arena" id="outcomeVisualArena">
+        <!-- Dynamic Result Illustration Rendered via JS/CSS -->
+        <div class="outcome-showcase" id="outcomeShowcase">
+          <!-- Populated dynamically with Clean Split, Rotten, or Chocolate visuals -->
+        </div>
+      </div>
+
+      <!-- Prophecy / Oracle Message -->
+      <div class="outcome-message-card" id="outcomeMessageCard">
+        <h2 class="outcome-headline" id="outcomeHeadline">Blessed!</h2>
+        <p class="outcome-prophecy" id="outcomeProphecy">The universe says GO FOR IT.</p>
+      </div>
+
+      <!-- Reset / Smash Another Button -->
+      <div class="result-actions">
+        <button id="smashAnotherBtn" class="big-smash-btn">
+          <span>🥥🔨</span> Smash Another Coconut
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- VFX Canvas Overlay -->
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
